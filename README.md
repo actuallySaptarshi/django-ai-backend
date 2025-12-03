@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/badge/python-gold?style=for-the-badge&logo=python" alt="Python" />
 </p>
 
-A robust Django-based backend designed to power AI-driven applications. This project serves as a foundational boilerplate featuring a dedicated API for AI interactions, a homepage interface, and a custom Tailwind CSS theme.
+A robust Django-based backend designed to power AI-driven applications. This project serves as a foundational boilerplate featuring a dedicated API for AI interactions, a homepage interface, and a custom Tailwind CSS theme. This project is intented to be used with a frontend framework (Eg: Flutter, React etc.) for the performance, features, security & reliability of Django alongwith a beautiful frontend library with the communications happening using REST Api.
 
 ## 📂 Project Structure
 
