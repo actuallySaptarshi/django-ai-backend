@@ -233,5 +233,6 @@ Contributions are welcome\! Please follow these steps:
 5.  Open a Pull Request.
 
 ## 📄 License
-
+<p align="center">
 This project is open source (MIT License).
+</p>
