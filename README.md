@@ -234,4 +234,4 @@ Contributions are welcome\! Please follow these steps:
 
 ## 📄 License
 
-MIT
+This project is open source (MIT License).
