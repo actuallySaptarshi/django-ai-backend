@@ -98,6 +98,30 @@ Access the application at:
   * **Admin Panel:** `http://127.0.0.1:8000/admin/`
 
 Based on the code provided in `api/views.py`, here is a structured **API Usage** section for your README. It details how to interact with the Chat endpoint, manage conversation history, and handle the prerequisites.
+-----
+
+## 🌟 Frontend Features
+
+The project includes a `homepage` app that manages user interactions and displays system statistics.
+
+### 📬 Contact Form
+A fully integrated contact form allows visitors to `https://localhost:8000/` send messages directly to the backend contact form database.
+
+* **Form Handling:** The form is managed by `homepage.forms.CreateMessage`, which processes the `name`, `email`, and `message` fields.
+* **Validation:** Custom cleaning methods ensure data integrity before storage:
+    * **Email:** Validates the presence of `@` and `.` characters.
+    * **Name:** Ensures the name field is not empty or whitespace-only.
+* **Storage:** Valid submissions are saved to the `contact_form` model with an automatic timestamp.
+* **Administration:** Messages are accessible via the Django Admin panel, where they can be searched by name or email and filtered by date.
+
+### 📊 Live AI Metrics
+The landing page features a dashboard that displays real-time usage statistics of the AI backend.
+
+* **Mechanism:** The system tracks global usage using a singleton record in the `users` table (specifically the user named `"public"`).
+* **Tracked Counters:**
+    1.  **Live Sessions (`chats`):** Represents the total number of unique conversation threads initiated by users.
+    2.  **AI Inferences (`promptsAnswered`):** Counts the total number of individual prompts successfully processed and answered by the AI model.
+* **Logic:** The `index` view retrieves these counters. If the "public" user does not exist (e.g., on the first run), the system automatically creates the record with counts initialized to zero.
 
 -----
 
