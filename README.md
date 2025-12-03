@@ -96,8 +96,7 @@ Access the application at:
   * **Homepage:** `http://127.0.0.1:8000/`
   * **API Root:** `http://127.0.0.1:8000/api/`
   * **Admin Panel:** `http://127.0.0.1:8000/admin/`
-
-Based on the code provided in `api/views.py`, here is a structured **API Usage** section for your README. It details how to interact with the Chat endpoint, manage conversation history, and handle the prerequisites.
+    
 -----
 
 ## 🌟 Frontend Features
