@@ -1,0 +1,670 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Django AI Portfolio</title>
+
+    {% tailwind_css %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+      html,
+      body {
+        overflow-x: hidden;
+      }
+      body {
+        font-family: "Cascadia Code", "Courier New", monospace;
+        background-color: #0a0a0a;
+        color: #e0e0e0;
+        /* Add a subtle noise/static background */
+        background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23222222' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        overflow-x: hidden;
+      }
+      body::after {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.5),
+          rgba(0, 0, 0, 0.5) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      /* Blinking cursor effect */
+      .blinking-cursor::after {
+        content: "_";
+        animation: blink 1s step-end infinite;
+        margin-left: 0.25rem;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* Custom styles for UI elements */
+      .cli-border {
+        border: 1px solid #444;
+      }
+      .cli-border-focus {
+        border: 1px solid #88b6ff;
+      }
+      .cli-button {
+        border: 1px solid #e0e0e0;
+        background-color: transparent;
+        color: #e0e0e0;
+        transition: all 0.2s ease-in-out;
+      }
+      .cli-button:hover {
+        background-color: #88b6ff;
+        border-color: #88b6ff;
+        color: #fff;
+      }
+      .text-blue-glow {
+        color: #88b6ff;
+        text-shadow: 0 0 8px rgba(13, 105, 255, 0.6);
+      }
+      .text-red-glow {
+        color: #ff4d4d;
+        text-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+      }
+      .text-gold-glow {
+        color: #ffd700;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+      }
+      .text-white-glow {
+        color: #e0e0e0;
+        text-shadow: 0 0 5px rgba(224, 224, 224, 0.5);
+      }
+      .nav-link:hover {
+        background-color: #88b6ff;
+        color: #fff;
+      }
+
+      /* Custom form focus styles */
+      #contact input:focus,
+      #contact textarea:focus {
+        outline: none;
+        border-color: #88b6ff;
+        box-shadow: 0 0 0 1px #88b6ff;
+      }
+
+      /* Scroll to top button styles */
+      #scrollToTopBtn {
+        background-color: rgba(10, 10, 10, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-color: #444;
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out,
+          background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      }
+
+      #scrollToTopBtn:hover {
+        background-color: rgba(13, 105, 255, 0.5);
+        border-color: #88b6ff;
+      }
+
+      .btn-hidden {
+        opacity: 0;
+        transform: translateY(1rem);
+        pointer-events: none;
+      }
+      .cli-border {
+        border: 1px solid rgba(0, 170, 255, 0.3);
+        box-shadow: 0 0 0px rgba(0, 170, 255, 0);
+      }
+
+      .cli-border:hover {
+        border-color: #00aaff;
+        box-shadow: 0 0 15px rgba(0, 170, 255, 0.6);
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- Startup Intro Screen -->
+    <div
+      id="startup-screen"
+      class="fixed inset-0 bg-[#0a0a0a] z-[9999] flex items-center justify-center text-2xl md:text-4xl text-white-glow transition-opacity duration-1000"
+    >
+      <p id="startup-text" class="blinking-cursor">INITIALIZING PORTFOLIO...</p>
+    </div>
+
+    <!-- Main Website Wrapper (initially hidden) -->
+    <div id="main-content" class="opacity-0 transition-opacity duration-1000">
+      <!-- Header -->
+      <header
+        class="bg-black/80 backdrop-blur-sm fixed top-0 w-full z-50 cli-border-focus border-b"
+      >
+        <nav
+          class="container mx-auto px-6 py-4 flex justify-between items-center"
+        >
+          <a href="#" class="text-2xl font-bold text-white-glow">[YOUR_LOGO]</a>
+          <div class="hidden md:flex items-center space-x-2">
+            <a
+              href="#projects"
+              class="nav-link px-3 py-1 transition-colors duration-200"
+              >/projects</a
+            >
+            <a
+              href="#about"
+              class="nav-link px-3 py-1 transition-colors duration-200"
+              >/about_me</a
+            >
+            <a
+              href="#contact"
+              class="nav-link px-3 py-1 transition-colors duration-200"
+              >/contact</a
+            >
+          </div>
+          <a
+            href="#"
+            target="__blank"
+            class="hidden md:block cli-button font-bold py-2 px-4"
+          >
+            >> Link to some Button
+          </a>
+          <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+            <span class="text-2xl text-blue-glow">[=]</span>
+          </button>
+        </nav>
+        <div
+          id="mobile-menu"
+          class="hidden md:hidden px-6 pb-4 cli-border-focus border-t"
+        >
+          <a href="#projects" class="block py-2 nav-link text-center"
+            >/projects</a
+          >
+          <a href="#about" class="block py-2 nav-link text-center">/about_me</a>
+          <a href="#contact" class="block py-2 nav-link text-center"
+            >/contact</a
+          >
+          <a
+            href="#"
+            target="__blank"
+            class="block mt-4 text-center nav-link cli-button font-bold py-2 px-4"
+          >
+            >> Download CV
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main>
+        <!-- Hero Section -->
+        <section
+          id="home"
+          class="min-h-screen flex items-center justify-center text-center overflow-hidden bg-[#141414]"
+        >
+          <div class="container mx-auto px-6 relative z-10">
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4"
+              data-aos="fade-down"
+            >
+              <span class="text-white-glow">Architecting </span>
+              <span id="typing-text-dynamic"></span
+              ><span class="blinking-cursor"></span>
+            </h1>
+            <p
+              class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              // Full Stack Django Developer | AI Integration Specialist
+            </p>
+            <a
+              href="#projects"
+              class="cli-button inline-block font-bold py-3 px-8 text-lg"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              $ list_projects --verbose
+            </a>
+          </div>
+        </section>
+
+        <!-- Projects Section (Formerly Features) -->
+        <section
+          id="projects"
+          class="min-h-screen flex items-center justify-center py-16 md:py-50 bg-[#101010]"
+        >
+          <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+              <h2
+                class="text-3xl md:text-4xl font-bold text-blue-glow font-cli text-white"
+                data-aos="fade-down"
+              >
+                C:\projects
+              </h2>
+              <p
+                class="text-gray-500 mt-2 font-cli"
+                data-aos="fade-down"
+                data-aos-delay="100"
+              >
+                > Selected Works and Case Studies
+              </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <!-- Card 1 -->
+              <div
+                class="cli-border p-8 bg-black/50 hover:-translate-y-2 transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <h3 class="text-xl font-bold text-white mb-2 font-cli">
+                  [Generative AI Chatbot]
+                </h3>
+                <p class="text-gray-400">
+                  A robust RAG pipeline built with Django and LangChain. 
+                  Integrates vector databases to provide context-aware answers from proprietary data sources.
+                </p>
+              </div>
+
+              <!-- Card 2 -->
+              <div
+                class="cli-border p-8 bg-black/50 hover:-translate-y-2 transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
+                <h3 class="text-xl font-bold text-white mb-2 font-cli">
+                  [Predictive Analytics API]
+                </h3>
+                <p class="text-gray-400">
+                   Scalable REST API endpoints serving fine-tuned models/other open source models. 
+                </p>
+              </div>
+
+              <!-- Card 3 -->
+              <div
+                class="cli-border p-8 bg-black/50 hover:-translate-y-2 transition-all duration-300"
+                data-aos="fade-up"
+                data-aos-delay="400"
+              >
+                <h3 class="text-xl font-bold text-white mb-2 font-cli">
+                  [Frontend]
+                </h3>
+                <p class="text-gray-400">
+                  Beautiful and user focussed frontend for Android/IOS/Desktop/Web using fluter and React JS.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- About Section -->
+        <section
+          id="about"
+          class="min-h-screen flex items-center justify-center py-16 md:py-24 bg-[#0c0c0c]"
+        >
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Tech Stack Section (Formerly Founders) -->
+            <div class="max-w-5xl mx-auto mb-16">
+              <h2
+                class="text-3xl md:text-4xl font-bold mb-8 text-blue-glow text-center font-cli"
+                data-aos="fade-up"
+              >
+                ./tech_stack
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Stack 1 -->
+                <div
+                  class="bg-gray-900/50 p-6"
+                  data-aos="fade-up"
+                  data-aos-delay="100"
+                >
+                  <h3 class="text-xl font-bold text-white">
+                    [BACKEND CORE]
+                  </h3>
+                  <p class="text-blue-400">Django, Supabase, Firebase</p>
+                </div>
+                <!-- Stack 2 -->
+                <div
+                  class="bg-gray-900/50 p-6"
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                >
+                  <h3 class="text-xl font-bold text-white">[AI & ML]</h3>
+                  <p class="text-blue-400">Ollama, LangChain, OpenAI API</p>
+                </div>
+                <!-- Stack 3 -->
+                <div
+                  class="bg-gray-900/50 p-6"
+                  data-aos="fade-up"
+                  data-aos-delay="300"
+                >
+                  <h3 class="text-xl font-bold text-white">[DEVOPS]</h3>
+                  <p class="text-blue-400">
+                    Docker, AWS, CI/CD Pipelines
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Traction Section (Counters) -->
+            <div class="max-w-5xl mx-auto">
+              <h2
+                class="text-3xl md:text-4xl font-bold mb-8 text-blue-glow text-center font-cli"
+                data-aos="fade-up"
+              >
+                ./metrics
+              </h2>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+                <!-- Metric 1 -->
+                <div
+                  class="bg-gray-900/50 p-6"
+                  data-aos="fade-up"
+                  data-aos-delay="100"
+                >
+                  <p class="text-4xl md:text-5xl font-bold text-white mb-2">
+                    {{ chats }}
+                  </p>
+                  <h3 class="text-lg font-semibold text-gray-400">
+                    Live Sessions Handled
+                  </h3>
+                </div>
+                <!-- Metric 2 -->
+                <div
+                  class="bg-gray-900/50 p-6"
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                >
+                  <p class="text-4xl md:text-5xl font-bold text-white mb-2">
+                    {{ prompts_answered }}
+                  </p>
+                  <h3 class="text-lg font-semibold text-gray-400">
+                    AI Inferences Generated
+                  </h3>
+                </div>
+                <!-- Metric 3 -->
+                <div
+                  class="bg-gray-900/50 p-6"
+                  data-aos="fade-up"
+                  data-aos-delay="300"
+                >
+                  <p class="text-4xl md:text-5xl font-bold text-white mb-2">
+                    10k+
+                  </p>
+                  <h3 class="text-lg font-semibold text-gray-400">
+                    System Uptime
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section
+          id="contact"
+          class="min-h-screen flex items-center justify-center p-4 bg-[#0a0a0a]"
+        >
+          <div class="container mx-auto">
+            <!-- Flex container for responsive layout -->
+            <div
+              class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16"
+            >
+              <!-- Left side: Title and Subtitle -->
+              <div
+                class="text-center md:text-left mb-8 md:mb-0"
+                data-aos="fade-right"
+              >
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-glow">
+                  ./hire_me
+                </h2>
+                <p class="text-gray-500 mt-2">
+                  > Initialize handshake sequence.
+                </p>
+                <p class="text-gray-500 mt-2">> test@example.com</p>
+              </div>
+
+              <!-- Right side: Contact Form -->
+              <div class="w-full max-w-md" data-aos="fade-left">
+                <form
+                  action="{% url 'index' %}"
+                  method="POST"
+                  class="space-y-6"
+                  id="contact-form"
+                >
+                  {% csrf_token %}
+                  <div>
+                    <label
+                      for="id_name"
+                      class="block text-sm font-medium text-gray-400 mb-1"
+                      >name:</label
+                    >
+                    <input
+                      type="text"
+                      name="name"
+                      id="id_name"
+                      class="block w-full bg-gray-900 cli-border p-3 text-white focus:border-blue-500"
+                    />
+                    {% if form.name.errors %}
+                    <p class="text-red-500 text-xs mt-1">
+                      {{ form.name.errors.0 }}
+                    </p>
+                    {% endif %}
+                  </div>
+                  <div>
+                    <label
+                      for="id_email"
+                      class="block text-sm font-medium text-gray-400 mb-1"
+                      >email:</label
+                    >
+                    <input
+                      type="email"
+                      name="email"
+                      id="id_email"
+                      class="block w-full bg-gray-900 cli-border p-3 text-white focus:border-blue-500"
+                    />
+                    {% if form.email.errors %}
+                    <p class="text-red-500 text-xs mt-1">
+                      {{ form.email.errors.0 }}
+                    </p>
+                    {% endif %}
+                  </div>
+                  <div>
+                    <label
+                      for="id_message"
+                      class="block text-sm font-medium text-gray-400 mb-1"
+                      >message:</label
+                    >
+                    <textarea
+                      id="id_message"
+                      name="message"
+                      rows="4"
+                      class="block w-full bg-gray-900 cli-border p-3 text-white focus:border-blue-500"
+                    ></textarea>
+                    {% if form.message.errors %}
+                    <p class="text-red-500 text-xs mt-1">
+                      {{ form.message.errors.0 }}
+                    </p>
+                    {% endif %}
+                  </div>
+                  <div class="text-center">
+                    <button
+                      type="submit"
+                      class="w-full cli-button font-bold py-3 px-6"
+                    >
+                      SEND_REQUEST
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="cli-border-focus border-t">
+        <div class="container mx-auto px-6 py-6 text-center text-gray-600">
+          <p>PROCESS_EXIT_CODE 0 // Dev Portfolio © 2024</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button
+      id="scrollToTopBtn"
+      title="Scroll to top"
+      class="fixed bottom-6 right-6 z-50 cli-button p-3 btn-hidden"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5 15l7-7 7 7"
+        />
+      </svg>
+    </button>
+
+    <script>
+      // --- Typing Animation ---
+      function startTypingAnimation() {
+        const dynamicTextElement = document.getElementById(
+          "typing-text-dynamic"
+        );
+        if (!dynamicTextElement) return;
+
+        const textArray = [
+          "Intelligent Backends.",
+          "Scalable AI Solutions.",
+          "Neural Networks.",
+        ];
+        const colorClasses = [
+          "text-blue-glow",
+          "text-red-glow",
+          "text-gold-glow",
+        ];
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 2000; // Delay before starting to erase
+        let textArrayIndex = 0;
+        let charIndex = 0;
+
+        function type() {
+          if (charIndex < textArray[textArrayIndex].length) {
+            dynamicTextElement.textContent +=
+              textArray[textArrayIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(type, typingDelay);
+          } else {
+            // Finished typing
+            setTimeout(erase, newTextDelay);
+          }
+        }
+
+        function erase() {
+          if (charIndex > 0) {
+            dynamicTextElement.textContent = textArray[
+              textArrayIndex
+            ].substring(0, charIndex - 1);
+            charIndex--;
+            setTimeout(erase, erasingDelay);
+          } else {
+            // Finished erasing
+            textArrayIndex++;
+            if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+
+            // Update color for the next phrase
+            dynamicTextElement.className = colorClasses[textArrayIndex];
+
+            setTimeout(type, typingDelay + 500);
+          }
+        }
+
+        // Initial setup
+        dynamicTextElement.className = colorClasses[0];
+        setTimeout(type, typingDelay + 250);
+      }
+
+      // --- Startup Sequence ---
+      window.addEventListener("load", () => {
+        const startupScreen = document.getElementById("startup-screen");
+        const mainContent = document.getElementById("main-content");
+
+        // 1. Show "HERMEiAS" for 2 seconds, then fade out intro and fade in site
+        setTimeout(() => {
+          startupScreen.style.opacity = "0";
+          mainContent.style.opacity = "1";
+
+          // Start the typing animation once the main content is visible
+          startTypingAnimation();
+
+          // 2. Remove the startup screen from the DOM after transition
+          setTimeout(() => {
+            startupScreen.style.display = "none";
+          }, 1000); // This should match the transition duration
+        }, 2000); // Total time before fade starts
+      });
+
+      // --- Mobile Menu Toggle ---
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      mobileMenuButton.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Close mobile menu when a link is clicked
+      const menuLinks = document.querySelectorAll("#mobile-menu a");
+      menuLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+        });
+      });
+
+      // --- Scroll to Top Button Logic ---
+      const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+      // Show the button when the user scrolls down
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          // Show button after scrolling 300px
+          scrollToTopBtn.classList.remove("btn-hidden");
+        } else {
+          scrollToTopBtn.classList.add("btn-hidden");
+        }
+      });
+
+      // Scroll to the top when the button is clicked
+      scrollToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800, // values from 0 to 3000, with step 50ms
+        once: true, // whether animation should happen only once - while scrolling down
+      });
+    </script>
+  </body>
+</html>
