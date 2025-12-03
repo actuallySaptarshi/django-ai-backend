@@ -10,6 +10,9 @@ import requests
 # Change this import from: from . import serializer
 from .serializer import TestSerializer, ChatSerializer
 
+
+chat_model="gemma3"
+
 class Test(APIView):
     def post(self, request):
         # Now, you can use CustomRequestSerializer directly
@@ -41,7 +44,7 @@ class Chat(APIView):
             validated_messages = serializer.validated_data['messages']
             
             message_data = {
-                "model": "gemma3",
+                "model": chat_model,
                 "messages": validated_messages,
                 "stream": False
             }
