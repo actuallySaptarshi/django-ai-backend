@@ -1,5 +1,11 @@
 # Django AI Backend
 
+<p align="center">
+<img src="https://img.shields.io/badge/django-green?style=for-the-badge&logo=django" alt="Django" />
+<img src="https://img.shields.io/badge/ollama-black?style=for-the-badge&logo=ollama" alt="Ollama" />
+<img src="https://img.shields.io/badge/python-gold?style=for-the-badge&logo=python" alt="Python" />
+</p>
+
 A robust Django-based backend designed to power AI-driven applications. This project serves as a foundational boilerplate featuring a dedicated API for AI interactions, a homepage interface, and a custom Tailwind CSS theme.
 
 ## 📂 Project Structure
@@ -175,7 +181,7 @@ To maintain context, include the `id` received from the previous response and ap
 }
 ```
 
-### 2\. Test Endpoint (`http://127.0.0.1:8000/api/chat/`)
+### 2\. Test Endpoint (`http://127.0.0.1:8000/api/test/`)
 
 **Class:** `Test`
 **Method:** `POST`
